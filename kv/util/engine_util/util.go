@@ -2,6 +2,7 @@ package engine_util
 
 import (
 	"bytes"
+	"strings"
 
 	"github.com/Connor1996/badger"
 	"github.com/golang/protobuf/proto"
@@ -9,6 +10,11 @@ import (
 
 func KeyWithCF(cf string, key []byte) []byte {
 	return append([]byte(cf+"_"), key...)
+}
+
+func KeyWithoutCF(cf string, key []byte) []byte {
+	subStrings := strings.Split(string(key), cf)
+	return []byte(strings.Join(subStrings[1:], "_"))
 }
 
 func GetCF(db *badger.DB, cf string, key []byte) (val []byte, err error) {
